@@ -4,7 +4,19 @@ window.addEventListener('DOMContentLoaded', init);
 
 function init() {
   // TODO
-  const button = document.getElementsByTagName("button")
+  const button = document.getElementsByTagName("button")[0]
+  const image = document.getElementsByTagName("img")[0];
+  const speechSynthesis = window.speechSynthesis
+
+  populateVoiceList();
+  
+  button.addEventListener("click", () => {
+    while (speechSynthesis.speaking) {
+      image.src = `assets/images/smiling-open.png`
+    }
+
+    image.src = `assets/images/smiling.png`
+  })
 }
 
 function populateVoiceList() {
@@ -24,13 +36,4 @@ function populateVoiceList() {
     document.getElementById("voice-select").appendChild(option);
   }
 }
-
-populateVoiceList();
-if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = populateVoiceList;
-}
-
-button.addEventListener("click", () => {
-  
-})
 
