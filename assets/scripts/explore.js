@@ -9,28 +9,34 @@ function init() {
   const text = document.getElementsByTagName("textarea")[0]
   const synth = window.speechSynthesis;
   const voiceSelect = document.getElementById("voice-select")
-  let voices = speechSynthesis.getVoices();
+  let voices;
 
-  console.log(voices)
+  populateVoiceList();
 
-  populateVoiceList(voices);
-
+  // synth.speaking.addEventListener("change", ()=> {
+  //   console.log("Changed")
+  // })
 
   button.addEventListener("click", () => {
+    voices = speechSynthesis.getVoices();
     var utterThis = new SpeechSynthesisUtterance(text.value);
     var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
     for(let i = 0; i < voices.length ; i++) {
       if(voices[i].name === selectedOption) {
-        console.log(voices[i])
         utterThis.voice = voices[i];
       }
     }
     synth.speak(utterThis);
-    // while (synth.speaking) {
-    //   image.src = `assets/images/smiling-open.png`
-    // }
 
-    // image.src = `assets/images/smiling.png`
+    if (synth.speaking) {
+      image.src = `assets/images/smiling-open.png`
+    } 
+
+    setTimeout(() => {
+      image.src = `assets/images/smiling.png`
+    }, 1000)
+   //
+
     text.blur();
   })
 }
@@ -40,6 +46,7 @@ function init() {
       return;
     }
     voices = speechSynthesis.getVoices();
+
     for(var i = 0; i < voices.length; i++) {
       var option = document.createElement('option');
       option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
@@ -52,9 +59,6 @@ function init() {
       document.getElementById("voice-select").appendChild(option);
     }
   }
-
-
-  populateVoiceList();
   if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
     speechSynthesis.onvoiceschanged = populateVoiceList;
   }
