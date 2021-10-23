@@ -39,7 +39,7 @@ function init() {
 
   button.addEventListener("click", () => {
     if (curHorn) {
-      if (curHorn === "party-horn") {
+      if (curHorn === "party-horn" && curVolume > 0) {
         jsConfetti.addConfetti()
       } 
       audio.load()
